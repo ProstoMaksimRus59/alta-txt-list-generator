@@ -103,10 +103,12 @@ def top(data,pp,target,idlvl): #Делает топ
                     superdata.append(".....................\n")
                 if target == "0":
                     superdata.append("Топ-" + str(cont))
-                    superdata.append(" **'" + str(printtop[0]) + " '**" )
+                    superdata.append(" **'" + str(printtop[0]) + "'**" )
                     if idlvl != "":
                         superdata.append("\nАвтор(ы)- **" + str(scanerpla(printtop[0],1)) + "**")
                         superdata.append("\nВерифер> **" + str(scanerpla(printtop[0],2)) + "**")
+                    else:
+                        superdata.append("\nПрошел>**"+infoplavict(printtop[0])+"**")
                     superdata.append("\n pp:**" + str(printtop[1]) + '**\n')
                 if idlvl != "":
                     superdata.append("Те кто прошли(без сортировки и ВСЕ даже вериферы тут):" '\n>***' + notvervict + "***\n")
@@ -292,3 +294,18 @@ def topver():
     test = open("toplvl.txt",'w')
     test.write(str(''.join(dad)))
     test.close()
+def infoplavict(plaer):
+    filespla = open("base/"+plaer + ".altapl",'r')
+    filespla.readline()
+    fff = filespla.read().split("\n")
+    filespla.close()
+    l = ''
+    fist = 0
+    for lvl in fff:
+        if lvl != "0" and fist == 1:
+            l = l + " , "
+        if lvl != "0":
+            l = l + lvl.split(":")[0]
+        fist = 1
+        print(fff)
+    return l
