@@ -64,6 +64,9 @@ def top(data,pp,target,idlvl): #Делает топ
     cont = 1
     if idlvl != "":
         superdata.append("####Main list####\n\n")
+    deco = [':first_place:',':second_place:',':third_place:',':medal:']
+    decolen = len(deco) - 1
+    print(decolen)
     for printtop in datapp:
         print(printtop)
         if printtop[1] != 0:
@@ -76,12 +79,17 @@ def top(data,pp,target,idlvl): #Делает топ
                 if cont == 11 and idlvl != "":
                     superdata.append("\n####Extended List####\n\n")
                 elif cont == 16 and idlvl != "":
-                    superdata.append("\n####legacy list####\n\n")
+                    superdata.append("\n####Beyond list####\n\n")
                 elif cont != 1:
                     superdata.append(".....................\n")
                 if target == "0":
                     superdata.append("Топ-" + str(cont))
-                    superdata.append(" **'" + str(printtop[0]) + "'**" )
+                    if cont <= decolen:
+                        superdata.append(' ' + str(deco[cont-1]) + "**'" + str(printtop[0]) + "'**" + str(deco[cont-1]))
+                    elif cont <= 10:
+                        superdata.append(' ' + str(deco[decolen]) + "**'" + str(printtop[0]) + "'**" + str(deco[decolen]))
+                    else:
+                        superdata.append(" **'" + str(printtop[0]) + "'**")
                     if idlvl != "":
                         superdata.append("\nАвтор(ы)- **" + str(scanerpla(printtop[0],1)) + "**")
                         superdata.append("\nВерифер> **" + str(scanerpla(printtop[0],2)) + "**")
