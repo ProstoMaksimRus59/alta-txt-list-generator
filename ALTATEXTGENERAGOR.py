@@ -5,7 +5,11 @@ import sys #это формально обрезанная lite для выво�
 from tkinter.messagebox import showerror, showinfo
 from urllib.error import URLError
 import zipfile,os,sys,re,shutil,urllib.request
-
+def dbsplit(data):
+    if data.find(":") != 1:
+        return data[(data.find(":")+1):]
+    else:
+        return data
 def urldata():
     return 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
 def F1(): #А как аргументы пихать в tk??? я в этом не силен
@@ -69,6 +73,8 @@ def top(data,pp,target,idlvl): #Делает топ
     print(decolen)
     for printtop in datapp:
         print(printtop)
+        namenotid = printtop[0].split(":")
+        namenotid = namenotid[-1]
         if printtop[1] != 0:
                 print(printtop[0])
                 if idlvl != "":
@@ -85,11 +91,11 @@ def top(data,pp,target,idlvl): #Делает топ
                 if target == "0":
                     superdata.append("Топ-" + str(cont))
                     if cont <= decolen:
-                        superdata.append(' ' + str(deco[cont-1]) + "**'" + str(printtop[0]) + "'**" + str(deco[cont-1]))
+                        superdata.append(' ' + str(deco[cont-1]) + "**'" + str(namenotid) + "'**" + str(deco[cont-1]))
                     elif cont <= 10:
-                        superdata.append(' ' + str(deco[decolen]) + "**'" + str(printtop[0]) + "'**" + str(deco[decolen]))
+                        superdata.append(' ' + str(deco[decolen]) + "**'" + str(namenotid) + "'**" + str(deco[decolen]))
                     else:
-                        superdata.append(" **'" + str(printtop[0]) + "'**")
+                        superdata.append(" **'" + str(namenotid) + "'**")
                     if idlvl != "":
                         superdata.append("\nАвтор(ы)- **" + str(scanerpla(printtop[0],1)) + "**")
                         superdata.append("\nВерифер> **" + str(scanerpla(printtop[0],2)) + "**")
@@ -129,7 +135,7 @@ def scanerpla(lvl,type):
     while lvls != "":
         try:
             if lvls[cout].split("\n")[0] == lvl:
-                dl = lvls[cout + int(type)].split(":")[-1]
+                dl = dbsplit(lvls[cout + int(type)])
                 return dl.rstrip('\n')
         except IndexError:
             return 0
