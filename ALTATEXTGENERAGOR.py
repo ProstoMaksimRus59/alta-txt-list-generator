@@ -47,7 +47,7 @@ def Victors(lvl):
         data = open("Base/" + file, 'r')
         while Scan != "0":
             Scan = data.readline().rstrip('\n')
-            Scan = Scan.split(":")[0]
+            Scan = Scan.rsplit(":",1)[0]
             if Scan.lower() == lvl.lower():
                 print(file.split(".altapl")[0] + ",", end=" ") #Вывод всех у кого есть лвл в пройденных
                 all.append(file.split(".altapl")[0])
@@ -89,21 +89,21 @@ def top(data,pp,target,idlvl): #Делает топ
                 elif cont != 1:
                     superdata.append(".....................\n")
                 if target == "0":
-                    superdata.append("Топ-" + str(cont))
+                    superdata.append("top-"+str(cont))
                     if cont <= decolen:
-                        superdata.append(' ' + str(deco[cont-1]) + "**'" + str(namenotid) + "'**" + str(deco[cont-1]))
+                        superdata.append('' + str(deco[cont-1]) + "**'" + str(namenotid) + "'**" + str(deco[cont-1]))
                     elif cont <= 10:
                         superdata.append(' ' + str(deco[decolen]) + "**'" + str(namenotid) + "'**" + str(deco[decolen]))
                     else:
                         superdata.append(" **'" + str(namenotid) + "'**")
                     if idlvl != "":
-                        superdata.append("\nАвтор(ы)- **" + str(scanerpla(printtop[0],1)) + "**")
-                        superdata.append("\nВерифер> **" + str(scanerpla(printtop[0],2)) + "**")
+                        superdata.append("\nChallenge by **" + str(scanerpla(printtop[0],1)) + "**")
+                        superdata.append("\nVerified by **" + str(scanerpla(printtop[0],2)) + "**")
                     else:
-                        superdata.append("\nПрошел>**"+infoplavict(printtop[0])+"**")
+                        superdata.append("\nCompleted>**"+infoplavict(printtop[0])+"**")
                     superdata.append("\n pp:**" + str(printtop[1]) + '**\n')
                 if idlvl != "":
-                    superdata.append("Те кто прошли(без сортировки и ВСЕ даже вериферы тут):" '\n>***' + notvervict + "***\n")
+                    superdata.append("All Victors (unsorted, and *all* of them—even the Verifiers are here):" '\n>***' + notvervict + "***\n")
                     superdata.append("id:**" + str(printtop[2]) + '**\n')
         cont = cont + 1
     return superdata
@@ -287,7 +287,8 @@ def topver():
     test.write(str(''.join(dad)))
     test.close()
 def infoplavict(plaer):
-    filespla = open("base/"+plaer + ".altapl",'r')
+    print(plaer)    
+    filespla = open("Base/"+plaer + ".altapl",'r')
     filespla.readline()
     fff = filespla.read().split("\n")
     filespla.close()
@@ -295,9 +296,12 @@ def infoplavict(plaer):
     fist = 0
     for lvl in fff:
         if lvl != "0" and fist == 1:
-            l = l + " , "
-        if lvl != "0":
+            if lvl != "":
+                l = l + " , "
+        print(lvl,len(lvl.split(":")))        
+        if lvl != "0" and len(lvl.split(":")) == 2:
             l = l + lvl.split(":")[0]
+        elif lvl != "0" and len(lvl.split(":")) == 3:
+            l = l + lvl.split(":")[1]
         fist = 1
-        print(fff)
     return l
