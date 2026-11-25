@@ -1,30 +1,61 @@
+#v7.0!!!
+
 import os #Говно код сделанный быстро чтобы не обучать людей пользоватся консолью - умеет только показывать статистику подобие офф листов (например поинтеркрейта).
 import re #+ может сама качать датабазу.
-import shutil #Этот недо gui уже не совместим начиная версии алты v3.4.. ТОК с v5.1
+import shutil #Этот генератор уже не совместим начиная версии алты v5.1.. ТОК с v7.0
 import sys #это формально обрезанная lite для вывода текста..
 from tkinter.messagebox import showerror, showinfo
 from urllib.error import URLError
-import zipfile,os,sys,re,shutil,urllib.request
+import os,sys,re,shutil,urllib.request
 def dbsplit(data):
     if data.find(":") != 1:
         return data[(data.find(":")+1):]
     else:
         return data
 def urldata():
-    return 'https://drive.google.com/uc?export=download&id=1z7XMeIXgCcbODcSNhrlzTJVypxPXaNTF' #откуда качать будет датабазу.(тут пример ссылки)
+    return 'https://drive.google.com/uc?export=download&id=1VYq4Dok2iainqwLljWoAzDuzu6hz7zo2' #откуда качать будет датабазу.(тут пример ссылки)
+def loaddb(folder):
+    try:
+        file = open(folder,'r',encoding='utf-8')
+    except FileNotFoundError:
+        print(("Не найденно"))
+        return 0
+    data = file.read()
+    file.close()
+    lvland = data.split("playrs:\n")
+    files = os.listdir() #Проверка на наличие уже датабазы
+    for scan in files:
+        if scan == "Base": #если есть то -
+            if 1 == 1:
+                shutil.rmtree("Base")
+                print(("Датабаза удаленна!"))
+    os.mkdir("Base")
+    file = open("Base/lvldatabase.altalvl",'w')
+    file.write(lvland[0])
+    file.close()
+    for plar in lvland[1].split(".altapl\n"):
+        filename = plar.split("\n")[0] + ".altapl"
+        filedata = plar.split("\n")[:-1]
+        if filename !=".altapl":
+            player = open("Base/" +filename,'w')
+            for data in filedata:
+                if data == '0':
+                    player.write(data)
+                else:
+                    player.write(data+"\n")
+            player.close()
+    print(("Датабаза загружена!"))
+    return 1
 def F1(): #А как аргументы пихать в tk??? я в этом не силен
     print("обновление дб")
     try:
-        urllib.request.urlretrieve(urldata(), "Base.zip")
+        urllib.request.urlretrieve(urldata(), "Base.altadb")
         try:
             shutil.rmtree('Base')
         except FileNotFoundError:
             print
-        try:
-            zip = zipfile.ZipFile('Base.zip', 'r')
-        except FileNotFoundError:
+        if loaddb('Base.altadb') == 0:
             sys.exit()
-        zip.extractall('')
         print("обновление дб - удачно!")
     except URLError:
         showinfo(title="Загрузка датабазы", message="ошибка")
